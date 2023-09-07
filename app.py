@@ -40,9 +40,9 @@ def import_product():
 
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
-    product_name = request.json['title']
+    product_name = request.json['url']
     global imported_products
-    imported_products = [product for product in imported_products if product['title'] != product_name]
+    imported_products = [product for product in imported_products if product['url'] != product_name]
     return jsonify({'message': f'Product {product_name} deleted successfully'}), 200
 
 
