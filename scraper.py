@@ -105,6 +105,7 @@ class Scraper:
 
 def scrape_data(scraper: Scraper) -> dict[str]:
     return {
+        'url': scraper.driver.current_url,
         'title': scraper.get_title(),
         'description': scraper.get_description(),
         'price': scraper.get_price(),
