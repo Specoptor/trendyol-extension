@@ -1,0 +1,209 @@
+.import-button {
+    background-color: #efefef;
+    border: 1px solid #E5E7EB;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: normal;
+    height: 100%;
+}
+
+.popup-content {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: #FCFCFC;
+    border: 1px solid #000000;
+    border-radius: 30px;
+    padding: 30px 20px;
+    width: 730px;
+    max-width: 100%;
+    height: 540px;
+}
+
+.popup-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.close-button {
+    right: 10px;
+    font-size: 30px;
+    font-weight: normal;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0px;
+}
+
+.popup-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-items {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Dropdown */
+
+/* CSS to style the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    /* Adjust as needed */
+}
+
+.selected-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    height: 36px;
+    background-color: #ffff;
+    /* Adjust as needed */
+}
+
+.icon {
+    width: 20px;
+    /* Adjust as needed */
+    height: 20px;
+    /* Adjust as needed */
+    margin-right: 5px;
+    /* Adjust as needed */
+}
+
+.options {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.option-text {
+    font-size: 18px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #f0f0f0;
+}
+
+.lasttime {
+    margin: 10px 0px;
+}
+
+.lasttime h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.lasttime h4 span {
+    font-weight: normal;
+}
+
+.list-head {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0px;
+}
+
+.list-head h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.total-count span {
+    font-weight: normal;
+}
+
+.import-table table {
+    /*     border: 1px solid #000000; */
+}
+
+.import-table table tr td {
+    border-bottom: 1px solid #17181A36;
+}
+
+.import-table table tr td:first-child {
+    width: 10%;
+}
+
+.import-table table tr td:nth-child(2) {
+    width: 70%;
+}
+
+.import-table table tr td:last-child {
+    width: 20%;
+    text-align: right;
+    padding: 5px 10px 5px 0px;
+}
+
+.import-table table tr td:last-child button {
+    border: 0px;
+    padding: 7px 7px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f16c4f;
+}
+
+.import-table {
+    background-color: #F5F5F5;
+    padding: 20px 20px;
+    height: 280px;
+    overflow: auto;
+}
+
+.foot-button {
+    margin: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.foot-button button {
+    padding: 10px 15px;
+    border: 1px solid #E5E7EB;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.import-button:hover,
+.foot-button button:hover {
+    background-color: #F4F4F4;
+}
