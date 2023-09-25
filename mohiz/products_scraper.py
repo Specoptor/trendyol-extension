@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 
 # Function to scrape image links using Selenium and BeautifulSoup
 def scrape_image_links(url):
+    '''This function scrap imges links from the products.
+    It uses Selenium to navigate to the slidebar and Beautiful soup to extract all the images link from
+    src attribute of image element in a div. '''
     firefox_options = webdriver.FirefoxOptions()
     firefox_options.add_argument('-headless')
 
