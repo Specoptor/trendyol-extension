@@ -1,20 +1,13 @@
 import csv
-# import pprint
 import requests
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 from selenium import webdriver
-# import logging
-
-from Getting_images import logger
 
 app = Flask(__name__)
 
 # Function to scrape image links using Selenium and BeautifulSoup
 def scrape_image_links(url):
-    '''This function scrap imges links from the products.
-        It uses Selenium to navigate to the slidebar and Beautiful soup to extract all the images link from
-        src attribute of image element in a div. '''
     driver = None  # Initialize 'driver' to None
     try:
         firefox_options = webdriver.FirefoxOptions()
@@ -34,81 +27,54 @@ def scrape_image_links(url):
 
         return image_links
     except Exception as e:
-        logger.error(f"Error while scraping image links: {str(e)}")
-        raise e
+        return []
     finally:
         if driver is not None:
             driver.quit()
+
 def get_brand_and_title(soup):
-    """
-       Get the brand and title of the product from the BeautifulSoup object.
-       :param soup: BeautifulSoup object representing the product page.
-       :return: a string containing the brand and title of the product.
-       """
+    # Implement the brand and title scraping logic here
     try:
         brand_and_title_element = soup.find(class_='pr-new-br')
         brand_and_title = brand_and_title_element.get_text()
         return brand_and_title
     except:
-        logger.error(f'Error getting brand and title')
         return None
 
-
 def get_price(soup):
-
-    """
-       Get the price of the product from the BeautifulSoup object.
-       :param soup: BeautifulSoup object representing the product page.
-       :return: a string containing the price of the product.
-       """
+    # Implement the price scraping logic here
     try:
         price_element = soup.find(class_='prc-dsc')
         price = price_element.get_text()
         return price
     except:
-        logger.debug(f'Price not found')
         return None
 
-
 def get_attributes(soup):
-    """
-       Get the attributes of the product from the BeautifulSoup object.
-       :param soup: BeautifulSoup object representing the product page.
-       :return: a dictionary containing the attributes of the product.
-       """
+    # Implement the attributes scraping logic here
     attr = soup.find_all('li', class_='detail-attr-item')
-
-
     attributes_dict = {}
 
     for element in attr:
-        # Find all the text within the <span> elements and remove leading/trailing whitespace
         span_elements = element.find_all('span')
 
         if len(span_elements) == 2:
             text_values = [item.get_text(strip=True) for item in span_elements]
 
-            # Check if there are exactly two text values (key and value)
             if len(text_values) == 2:
                 key, value = text_values
                 attributes_dict[key] = value
 
-    return attributes_dict  # Return the attributes dictionary
+    return attributes_dict
 
 def get_description(soup):
-
-    """
-       Get the description of the product from the BeautifulSoup object.
-       :param soup: BeautifulSoup object representing the product page.
-       :return: a string containing the description of the product.
-       """
-    description = None
+    # Implement the description scraping logic here
     try:
         description_list_element = soup.find(class_='detail-desc-list')
         description = description_list_element.get_text()
+        return description
     except:
-        logger.debug(f'Description not found')
-    return description
+        return None
 
 @app.route('/scrape', methods=['POST'])
 def scrape_product_details():
@@ -120,7 +86,7 @@ def scrape_product_details():
             return jsonify({'ErrorCode': 400,
                             'ErrorMessage': 'Invalid request, Wrong Syntax and  Please provide a list of URLs in the JSON payload.'}), 400
 
-        scraped_data = []  # Initialize a list to store scraped data
+        scraped_data = []
 
         for url_to_scrape in urls_to_scrape:
             try:
@@ -133,7 +99,6 @@ def scrape_product_details():
                 if soup.title.get_text() == 'trendyol.com':
                     return jsonify({'ErrorCode': 404, 'ErrorMessage': 'Request Not Found'}), 404
 
-                # Call the function to get image links
                 image_links = scrape_image_links(url_to_scrape)
 
                 product_details = {
@@ -145,11 +110,10 @@ def scrape_product_details():
                     'description': get_description(soup)
                 }
 
-                scraped_data.append(product_details)  # Add scraped data to the list
+                scraped_data.append(product_details)
             except Exception as e:
                 return jsonify({'ErrorCode': 500, 'ErrorMessage': 'Internal server Error'}), 500
 
-        # Calculate additional parameters
         payload_list_size = len(scraped_data)
         urls_found_count = len(urls_to_scrape)
         urls_scrapped_count = payload_list_size
@@ -163,7 +127,6 @@ def scrape_product_details():
             'ScrappedProductsResponse': scraped_data
         }
 
-        # Save product details to a CSV file for all URLs
         csv_filename = 'product_details.csv'
         with open(csv_filename, 'a', newline='', encoding='utf-8') as csv_file:
             fieldnames = ['url', 'brand_and_title', 'price', 'attributes', 'images', 'description']
