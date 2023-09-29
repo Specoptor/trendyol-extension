@@ -3,10 +3,33 @@ import requests
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import re
 
 app = Flask(__name__)
 
 # Function to scrape image links using Selenium and BeautifulSoup
+def get_barcode(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Find the script tag that contains the barcode information
+        script_tag = soup.find('script', string=re.compile('window.__PRODUCT_DETAIL_APP_INITIAL_STATE__'))
+
+        if script_tag:
+            # Use regular expressions to extract the barcode information
+            match = re.search(r'"barcode":"(\d+)"', script_tag.string)
+
+            if match:
+                barcode = match.group(1)
+                return barcode
+    except Exception as e:
+        print(f"Error retrieving barcode for {url}: {str(e)}")
+
+    return None
+
 def scrape_image_links(url):
     driver = None  # Initialize 'driver' to None
     try:
@@ -107,7 +130,8 @@ def scrape_product_details():
                     'price': get_price(soup),
                     'attributes': get_attributes(soup),
                     'images': image_links,
-                    'description': get_description(soup)
+                    'description': get_description(soup),
+                    'barcode': get_barcode(url_to_scrape)  # New line to get barcode
                 }
 
                 scraped_data.append(product_details)
@@ -129,7 +153,7 @@ def scrape_product_details():
 
         csv_filename = 'product_details.csv'
         with open(csv_filename, 'a', newline='', encoding='utf-8') as csv_file:
-            fieldnames = ['url', 'brand_and_title', 'price', 'attributes', 'images', 'description']
+            fieldnames = ['url', 'brand_and_title', 'price', 'attributes', 'images', 'description', 'barcode']
             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             if csv_file.tell() == 0:
                 writer.writeheader()
