@@ -1,3 +1,5 @@
+import json
+
 from app import app_with_scraper
 import pytest
 
@@ -26,6 +28,13 @@ def trendyol_urls():
         "https://www.trendyol.com/bambi/vizon-suet-kadin-cizme-k03828030102-p-163949261"
     ]
     return urls
+
+
+@pytest.fixture
+def urls_250():
+    with open('files/urls_250.json', 'r') as f:
+        urls = json.load(f)
+        return urls
 
 
 def test_scrape_endpoint(client, trendyol_urls):
