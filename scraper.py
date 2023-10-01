@@ -1,26 +1,26 @@
 import re
 
+from selenium import webdriver
 from selenium.webdriver.common.by import By
-from driver import Driver
 import logging
-
-d = Driver()
 
 logger = logging.Logger('scraper_logger')
 
 
-def get_url(url):
-    """ Get the URL using the driver object initialized at module level. This is to avoid initializing the driver
-    everytime we want to scrape a URL.
-
-    :param url: url to scrape
-    """
-    d.driver.get(url)
+class Driver:
+    def __init__(self):
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument("no-sandbox")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("log-level=3")
+        self.driver = webdriver.Chrome(options=options)
 
 
 class Scraper:
-    def __init__(self, d: Driver):
-        self.driver = d.driver
+    def __init__(self):
+        self.driver = Driver().driver
 
     def get_title(self) -> str or None:
         """ Get the brand and title of the product by first finding the brand and title element using the class name.
@@ -129,19 +129,21 @@ class Scraper:
             pass
         return None
 
+    def scrape_details(self, url) -> dict[str]:
+        """ Scrape the product details using the scraper object.
 
-def scrape_data(scraper: Scraper) -> dict[str]:
-    """ Scrape the product details using the scraper object.
+        :return: a dictionary containing the product details
+        """
+        self.driver.get(url)
+        return {
+            'url': self.driver.current_url,
+            'title': self.get_title(),
+            'description': self.get_description(),
+            'price': self.get_price(),
+            'attributes': self.get_attributes(),
+            'barcode': self.get_barcode(),
+            'images': self.get_images()
+        }
 
-    :param scraper: a scraper object
-    :return: a dictionary containing the product details
-    """
-    return {
-        'url': scraper.driver.current_url,
-        'title': scraper.get_title(),
-        'description': scraper.get_description(),
-        'price': scraper.get_price(),
-        'attributes': scraper.get_attributes(),
-        'barcode': scraper.get_barcode(),
-        'images': scraper.get_images()
-    }
+    def close(self):
+        self.driver.quit()
