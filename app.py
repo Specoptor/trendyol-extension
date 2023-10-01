@@ -1,65 +1,61 @@
 from flask import Flask, request, jsonify
-from bs4 import BeautifulSoup
-from selenium import webdriver
+
+from scraper import Scraper
 import csv
-import scraper
-from flask_cors import CORS
+from io import StringIO
 
-app = Flask(__name__)
-CORS(app)
-# Temporary list to store imported products
-imported_products = []
+# Create a new Flask app instance and define the /scrape endpoint with the integrated scraper functionality
+
+app_with_scraper = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return 'welcome to the chrome extension backend'
+@app_with_scraper.route('/scrape', methods=['POST'])
+def scrape_with_scraper():
+    data = request.get_json()
+    urls = data.get("urls", [])
+
+    scraper = Scraper()
+    results = []
+    for url in urls:
+        product_details = scraper.scrape_details(url)
+        results.append(product_details)
+    scraper.close()
+
+    return jsonify(results), 200
 
 
-@app.route('/import_product', methods=['POST'])
-def import_product():
-    url = request.json['url']
-    if "trendyol.com" not in url:
-        return jsonify({'error': 'Invalid URL'}), 400
+@app_with_scraper.route('/generate-csv', methods=['POST'])
+def generate_csv():
+    # Retrieve data
+    data = request.get_json()
+    urls = data.get("urls", [])
 
-    # Initialize Selenium WebDriver
-    scraper.get_url(url)
+    scraper = Scraper()
+    scraped_data = []
+    for url in urls:
+        product_details = scraper.scrape_details(url)
+        scraped_data.append(product_details)
+    scraper.close()
 
-    # scrape the product page using selenium
-    scraped_data = scraper.Scraper(scraper.d)
-    product_details = scraper.scrape_data(scraped_data)
+    # Convert data to CSV format
+    output = StringIO()
+    fieldnames = ['url', 'title', 'description', 'price', 'attributes', 'barcode', 'images']
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+    for row in scraped_data:
+        writer.writerow(row)
 
-    # Add the imported product to the list
-    imported_products.append(product_details)
-
-    # Close the Selenium driver
-    scraper.d.close()
-
-    return jsonify(product_details), 200
-
-
-@app.route('/delete_product', methods=['POST'])
-def delete_product():
-    product_name = request.json['url']
-    global imported_products
-    imported_products = [product for product in imported_products if product['url'] != product_name]
-    return jsonify({'message': f'Product {product_name} deleted successfully'}), 200
-
-
-@app.route('/reset_list', methods=['GET'])
-def reset_list():
-    global imported_products
-    imported_products.clear()
-    return jsonify({'message': 'List reset successfully'}), 200
+    # Set the correct headers for CSV response
+    response = app_with_scraper.response_class(
+        response=output.getvalue(),
+        mimetype='text/csv'
+    )
+    response.headers['Content-Disposition'] = 'attachment; filename=products.csv'
+    return response
 
 
-@app.route('/export_csv', methods=['GET'])
-def export_csv():
-    # Export the imported products to a CSV file
-    with open('products.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Name', 'Price'])
-        for product in imported_products:
-            writer.writerow([product['name'], product['price']])
+"Endpoint '/generate-csv' implemented for generating and sending CSV as a response."
 
-    return jsonify({'message': 'CSV exported successfully'}), 200
+# Run the Flask app instance
+if __name__ == '__main__':
+    app_with_scraper.run(debug=True)
