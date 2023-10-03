@@ -1,0 +1,12 @@
+{
+    "status": "partial_success",
+    "message": "Scraping error for some URLs, but CSV generated for others.",
+    "data": {
+        "attachment": {
+            "filename": "partial_products_data.csv",
+            "content_type": "text/csv",
+            "data": "Base64 encoded CSV data for successful URLs..."
+        }
+    },
+    "not_scrapped": ["http://scraping-error-url1.com"]
+}

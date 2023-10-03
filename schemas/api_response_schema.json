@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["success", "partial_success", "error", "failure"]
+    },
+    "message": {
+      "type": "string",
+      "enum": [
+        "All URLs scraped and CSV generated.",
+        "Successfully scraped SOME or ALL URLs but CSV generation failed.",
+        "Partial URLs scraped and CSV generated.",
+        "Internal server error.",
+        "Connection error for some URLs, but CSV generated for others.",
+        "Scraping error for some URLs, but CSV generated for others.",
+        "No URLs provided.",
+        "Exceeded maximum URL limit of 100."
+      ]
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "attachment": {
+          "type": "object",
+          "properties": {
+            "filename": {
+              "type": "string"
+            },
+            "content_type": {
+              "type": "string",
+              "enum": ["text/csv"]
+            },
+            "data": {
+              "type": "string",
+              "description": "Base64 encoded CSV data"
+            }
+          },
+          "required": ["filename", "content_type", "data"]
+        }
+      },
+      "required": ["attachment"]
+    },
+    "not_scrapped": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  },
+  "required": ["status", "message"],
+  "additionalProperties": false
+}

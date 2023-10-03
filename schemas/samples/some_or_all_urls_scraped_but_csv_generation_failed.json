@@ -1,0 +1,5 @@
+{
+    "status": "error",
+    "message": "Successfully scraped SOME or ALL URLs but CSV generation failed.",
+    "not_scrapped": ["http://scraping-error-url1.com", "http://scraping-error-url2.com"]
+}

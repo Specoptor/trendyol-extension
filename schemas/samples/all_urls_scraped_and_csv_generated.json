@@ -1,0 +1,11 @@
+{
+    "status": "success",
+    "message": "All URLs scraped and CSV generated.",
+    "data": {
+        "attachment": {
+            "filename": "products_data.csv",
+            "content_type": "text/csv",
+            "data": "Base64 encoded CSV data here..."
+        }
+    }
+}
