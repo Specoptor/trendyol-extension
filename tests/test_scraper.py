@@ -82,3 +82,24 @@ def test_barcode(url_list):
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['barcode'], (str, NoneType))
     scraper_obj.close()
+
+
+def test_validate_actual_product_urls(url_list):
+    """ Test that the product urls are valid """
+    for url in url_list:
+        assert scraper.is_valid_trendyol_url(url)
+
+
+def test_invalidate_non_turkish_product_links():
+    """
+    Test that invalid urls, non-product page urls, and non-turkish product urls are invalidated.
+    """
+    invalid_url_list = [
+        'https://www.trendyol.com/de/happiness-istanbul/dress-beige-shift-p-670197121?boutiqueId=48&merchantId=968&itemNumber=886692985',
+        # german product
+        'https://www.trendyol.com/en/olalook/blouse-pink-slim-fit-p-333500680',  # english product
+        'https://www.google.com'  # not trendyol
+        'https://www.trendyol.com'  # home page
+    ]
+    for url in invalid_url_list:
+        assert not scraper.is_valid_trendyol_url(url)

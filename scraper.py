@@ -7,6 +7,27 @@ import logging
 logger = logging.Logger('scraper_logger')
 
 
+def is_valid_trendyol_url(url: str) -> bool:
+    """
+    Validate if the given URL matches the typical Trendyol product page pattern.
+
+    The function uses a regex pattern to validate URLs, ensuring they conform to:
+    https://www.trendyol.com/brand-name/product-name-p-productid
+    https://www.trendyol.com/product-name-p-productid
+
+    This function specifically invalidates URLs that:
+    - Are not on the domain www.trendyol.com.
+    - Have 'en' or 'de' (English or German) product page paths.
+    - Do not lead directly to a product page after trendyol.com.
+
+    :param url: url to validate
+    :return: true or false
+    """
+
+    pattern = r'^https://www\.trendyol\.com/[\w\-]+/[\w\-]+-p-\d+$'
+    return bool(re.match(pattern, url))
+
+
 class Driver:
     def __init__(self):
         options = webdriver.ChromeOptions()
