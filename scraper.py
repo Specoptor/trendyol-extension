@@ -86,7 +86,7 @@ class Scraper:
             # Split the text by lines and filter out any empty lines
             lines = [line.strip() for line in attributes_list.split('\n') if line.strip()]
             # Create a dictionary by taking pairs of lines as key-value pairs
-            attributes = {lines[i]: lines[i+1] for i in range(0, len(lines)-1, 2)}
+            attributes = {lines[i]: lines[i + 1] for i in range(0, len(lines) - 1, 2)}
         except NoSuchElementException:
             pass
         return attributes
@@ -160,11 +160,10 @@ class Scraper:
 
         try:
             self.driver.get(url)
+            if self.driver.title == 'trendyol.com':
+                raise URLNotFoundError('URL not found.')
         except Exception:
-            raise ConnectionError('unable to access the url')
-
-        if self.driver.title == 'trendyol.com':
-            raise URLNotFoundError()
+            raise ConnectionError('Unknown Connection Error Occurred.')
 
         return {
             'url': self.driver.current_url,
