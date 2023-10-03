@@ -1,0 +1,12 @@
+{
+  "status": "FAILURE",
+  "message": "More than allowable limit of 100 URLs provided.",
+  "data": {
+    "processed_urls_dict": {
+      "scraped": [],
+      "invalid_urls": [],
+      "connection_errors": [],
+      "scraping_errors": []
+    }
+  }
+}

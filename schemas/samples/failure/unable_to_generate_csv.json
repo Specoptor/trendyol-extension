@@ -1,0 +1,12 @@
+{
+    "status": "FAILURE",
+    "message": "Unable to generate the CSV file.",
+    "data": {
+        "processed_urls_dict": {
+            "scraped": ["http://valid-url1.com"],
+            "invalid_urls": [],
+            "connection_errors": [],
+            "scraping_errors": ["http://scraping-error-url1.com"]
+        }
+    }
+}

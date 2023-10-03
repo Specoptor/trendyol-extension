@@ -4,52 +4,87 @@
   "properties": {
     "status": {
       "type": "string",
-      "enum": ["success", "partial_success", "error", "failure"]
+      "enum": ["SUCCESS", "PARTIAL_SUCCESS", "FAILURE"],
+      "description": "The overall status of the request processing."
     },
     "message": {
       "type": "string",
       "enum": [
         "All URLs scraped and CSV generated.",
-        "Successfully scraped SOME or ALL URLs but CSV generation failed.",
-        "Partial URLs scraped and CSV generated.",
-        "Internal server error.",
-        "Connection error for some URLs, but CSV generated for others.",
-        "Scraping error for some URLs, but CSV generated for others.",
+        "Some URLs resulted in connection or scraping errors. CSV Generated containing the successfully scraped products.",
         "No URLs provided.",
-        "Exceeded maximum URL limit of 100."
-      ]
+        "More than allowable limit of 100 URLs provided.",
+        "Unable to generate the CSV file."
+      ],
+      "description": "A descriptive message providing additional details about the processing outcome."
     },
     "data": {
       "type": "object",
+      "description": "Contains the CSV attachment and URL processing details if applicable.",
       "properties": {
         "attachment": {
           "type": "object",
+          "description": "Details of the generated CSV containing scraped product data.",
           "properties": {
             "filename": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the generated CSV file."
             },
             "content_type": {
               "type": "string",
-              "enum": ["text/csv"]
+              "enum": ["text/csv"],
+              "description": "The MIME type of the CSV file."
             },
             "data": {
               "type": "string",
-              "description": "Base64 encoded CSV data"
+              "description": "The actual CSV data encoded in base64 format."
             }
           },
           "required": ["filename", "content_type", "data"]
+        },
+        "processed_urls_dict": {
+          "type": "object",
+          "description": "A breakdown of URLs based on their processing status.",
+          "properties": {
+            "scraped": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URLs that were successfully scraped."
+            },
+            "invalid_urls": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URLs deemed invalid."
+            },
+            "connection_errors": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URLs that encountered connection errors during scraping."
+            },
+            "scraping_errors": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URLs where scraping failed due to issues like CAPTCHAs or changed site structures."
+            }
+          },
+          "required": ["scraped", "invalid_urls", "connection_errors", "scraping_errors"]
         }
       },
-      "required": ["attachment"]
-    },
-    "not_scrapped": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "uri"
-      }
+      "required": ["processed_urls_dict"]
     }
   },
-  "required": ["status", "message"],
+  "required": ["status", "message", "data"],
   "additionalProperties": false
 }
