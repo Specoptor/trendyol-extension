@@ -30,6 +30,14 @@ class InvalidURLError(BaseScrapingException):
         super().__init__(self.message)
 
 
+class URLNotFoundError(BaseScrapingException):
+    """Raised when a provided URL is invalid or doesn't match the expected pattern."""
+
+    def __init__(self, message="URL not found."):
+        self.message = message
+        super().__init__(self.message)
+
+
 class InternalServerError(BaseScrapingException):
     """Raised when an unknown Exception Occurs."""
 
