@@ -1,0 +1,19 @@
+{
+  "valid": [
+    "https://www.trendyol.com/sail-lakers/beyaz-deri-bagcikli-erkek-gunluk-ayakkabi-p-366825717",
+    "https://www.trendyol.com/trendshopping/iphone-13-kose-korumali-antik-deri-telefon-kilifi-lacivert-p-348328113"
+  ],
+  "invalid_urls": [
+    "https://www.trendyol.com/"
+  ],
+  "connection_errors": [
+    "https://www.trendyol.com/nothing"
+  ],
+  "url_not_found_errors": [
+    "https://www.trendyol.com/seher-yildizi/100-pamuk-gri-renk-5-adet-erkek-slip-kulot-yeni-sezon-p-733009079%7C"
+  ],
+  "scraping_errors": [
+    "https://www.trendyol.com/astra-market/protez-dis-saklama-kabi-p-732116228",
+    "https://www.trendyol.com/sail-lakers/beyaz-deri-bagcikli-erkek-gunluk-ayakkabi-p-366825717"
+  ]
+}
