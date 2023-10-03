@@ -1,52 +1,38 @@
 from types import NoneType
-
-import pytest
-import random
-
-import scraper  # driver initialized at module level
+from config import urls_10, urls_250
+import scraper
 
 
-@pytest.fixture
-def url_list():
-    with open('files/urls.txt', 'r') as f:
-        urls = [line.strip() for line in f.readlines()]
-        random.shuffle(urls)  # shuffle the list to randomize the order of urls
-        return urls
-
-
-def test_title(url_list):
+def test_title(urls_10):
     """ Test that the title is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['title'], str)
     scraper_obj.close()
 
 
-def test_price(url_list):
+def test_price(urls_10):
     """ Test that the price is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['price'], str)
     scraper_obj.close()
 
 
-def test_attributes(url_list):
+def test_attributes(urls_10):
     """ Test that the attributes is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['attributes'], dict)
     scraper_obj.close()
 
 
-def test_images(url_list):
+def test_images(urls_10):
     """ Test that the images is not null for a sample of 10 products """
-    urls = url_list[:10]
+    urls = urls_10
     scraper_obj = scraper.Scraper()
     for url in urls:
         product_details = scraper_obj.scrape_details(url)
@@ -54,39 +40,36 @@ def test_images(url_list):
     scraper_obj.close()
 
 
-def test_description(url_list):
+def test_description(urls_10):
     """ Test that the description is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['description'], str)
     scraper_obj.close()
 
 
-def test_url(url_list):
+def test_url(urls_10):
     """ Test that the url is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['url'], str)
     scraper_obj.close()
 
 
-def test_barcode(url_list):
+def test_barcode(urls_10):
     """ Test that the barcode is not null for a sample of 10 products """
-    urls = url_list[:10]
     scraper_obj = scraper.Scraper()
-    for url in urls:
+    for url in urls_10:
         product_details = scraper_obj.scrape_details(url)
         assert isinstance(product_details['barcode'], (str, NoneType))
     scraper_obj.close()
 
 
-def test_validate_actual_product_urls(url_list):
+def test_validate_actual_product_urls(urls_250):
     """ Test that the product urls are valid """
-    for url in url_list:
+    for url in urls_250:
         assert scraper.is_valid_trendyol_url(url)
 
 
