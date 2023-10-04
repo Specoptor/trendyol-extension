@@ -28,9 +28,10 @@ def generate_api_response(url_list: list[str]) -> ScraperResponseModel:
 
     # If we have successfully scraped data, generate the CSV
     if processed_data['scraped']:
-        csv_string = CSVGenerator.generate_csv_string_from_data(processed_data['scraped'])
-        encoded_content = base64.b64encode(csv_string.encode()).decode('utf-8')
-        attachment_data = AttachmentModel(filename="scraped_data.csv", content_type="text/csv", data=encoded_content)
+        csv_path = CSVGenerator.generate_csv_from_data(processed_data['scraped'])
+        with open(csv_path, "rb") as file:
+            encoded_content = base64.b64encode(file.read()).decode('utf-8')
+        attachment_data = AttachmentModel(filename=csv_path, content_type="text/csv", data=encoded_content)
         csv_generated = True
 
     if csv_generated and not any([processed_data['invalid_urls'], processed_data['connection_errors'], processed_data['scraping_errors'], processed_data['url_not_found_errors']]):
