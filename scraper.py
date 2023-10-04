@@ -158,12 +158,9 @@ class Scraper:
         if not is_valid_trendyol_url(url):
             raise InvalidURLError()
 
-        try:
-            self.driver.get(url)
-            if self.driver.title == 'trendyol.com':
-                raise URLNotFoundError('URL not found.')
-        except Exception:
-            raise ConnectionError('Unknown Connection Error Occurred.')
+        self.driver.get(url)
+        if self.driver.title == 'trendyol.com':
+            raise URLNotFoundError('URL not found.')
 
         return {
             'url': self.driver.current_url,
@@ -208,10 +205,3 @@ def scrape_payload(url_list: list[str]) -> dict[str, list[Any]]:
 
     scraper_obj.close()
     return processed_urls_dict
-
-
-if __name__ == '__main__':
-    with open('tests/files/urls.txt', 'r') as f:
-        urls = [url.strip() for url in f.readlines()]
-        processed_urls_dict = scrape_payload(urls)
-        print(processed_urls_dict)
