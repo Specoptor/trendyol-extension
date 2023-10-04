@@ -77,9 +77,17 @@
                 "format": "uri"
               },
               "description": "List of URLs where scraping failed due to issues like CAPTCHAs or changed site structures."
+            },
+            "url_not_found_errors": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URLs that returned a 404 or 410."
             }
-          },
-          "required": ["scraped", "invalid_urls", "connection_errors", "scraping_errors"]
+            },
+          "required": ["scraped", "invalid_urls", "connection_errors", "scraping_errors", "url_not_found_errors"]
         }
       },
       "required": ["processed_urls_dict"]

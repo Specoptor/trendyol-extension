@@ -6,7 +6,8 @@
             "scraped": [],
             "invalid_urls": [],
             "connection_errors": [],
-            "scraping_errors": []
+            "scraping_errors": [],
+            "url_not_found_errors": []
         }
     }
 }

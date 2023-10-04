@@ -6,7 +6,8 @@
             "scraped": ["http://valid-url1.com"],
             "invalid_urls": [],
             "connection_errors": [],
-            "scraping_errors": ["http://scraping-error-url1.com"]
+            "scraping_errors": ["http://scraping-error-url1.com"],
+            "url_not_found_errors": []
         }
     }
 }
