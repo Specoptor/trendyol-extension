@@ -44,3 +44,11 @@ class InternalServerError(BaseScrapingException):
     def __init__(self, message="Internal server error."):
         self.message = message
         super().__init__(self.message)
+
+
+class CSVGenerationError(BaseScrapingException):
+    """Raised when an unknown Exception Occurs."""
+
+    def __init__(self, message="CSV generation error."):
+        self.message = message
+        super().__init__(self.message)
