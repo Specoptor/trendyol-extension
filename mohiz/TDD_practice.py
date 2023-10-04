@@ -29,7 +29,7 @@ def test_addition():
     assert add(-1, 1) == 0
     assert add(-1, -1) == -2
 def add(a,b):
-    return a +b
+    return a + b
 
 @pytest.fixture(params=[1, 2, 3])
 def input_data(request):
