@@ -86,3 +86,36 @@ def test_invalidate_non_turkish_product_links():
     ]
     for url in invalid_url_list:
         assert not scraper.is_valid_trendyol_url(url)
+
+
+def test_scrape_payload():
+    """ Test that the payload is scraped correctly for a sample of selective sample """
+
+    # urls to test
+    test_urls = ['https://www.trendyol.com/sail-lakers/beyaz-deri-bagcikli-erkek-gunluk-ayakkabi-p-366825717',
+                 'https://www.trendyol.com/trendshopping/iphone-13-kose-korumali-antik-deri-telefon-kilifi-lacivert-p-348328113',
+                 'https://www.trendyol.com/',
+                 'https://www.trendyol.com/seher-yildizi/100-pamuk-gri-renk-5-adet-erkek-slip-kulot-yeni-sezon-p-73300907',
+                 'https://www.trendyol.com/astra-market/protez-dis-saklama-kabi-p-732116228'
+                 ]
+
+    processed_urls_dict = scraper.scrape_payload(test_urls)
+
+    # assert size of urls
+    assert len(processed_urls_dict['scraped']) == 2
+    assert len(processed_urls_dict['invalid_urls']) == 1
+    assert len(processed_urls_dict['connection_errors']) == 0
+    assert len(processed_urls_dict['url_not_found_errors']) == 1
+    assert len(processed_urls_dict['scraping_errors']) == 1
+
+    # assert scraped urls
+    scraped_urls = [product['url'] for product in processed_urls_dict['scraped']]
+    assert 'https://www.trendyol.com/sail-lakers/beyaz-deri-bagcikli-erkek-gunluk-ayakkabi-p-366825717' in scraped_urls
+    assert 'https://www.trendyol.com/trendshopping/iphone-13-kose-korumali-antik-deri-telefon-kilifi-lacivert-p-348328113' in scraped_urls
+
+    # assert non-scraped urls
+    assert processed_urls_dict['invalid_urls'] == ['https://www.trendyol.com/']
+    assert processed_urls_dict['url_not_found_errors'] == [
+        'https://www.trendyol.com/seher-yildizi/100-pamuk-gri-renk-5-adet-erkek-slip-kulot-yeni-sezon-p-73300907']
+    assert processed_urls_dict['scraping_errors'] == [
+        'https://www.trendyol.com/astra-market/protez-dis-saklama-kabi-p-732116228']
