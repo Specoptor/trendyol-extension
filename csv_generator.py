@@ -59,3 +59,20 @@ class CSVGenerator:
                 writer.writerow({k: str(v) for k, v in item.items()})
 
         return filename
+
+
+def generate_csv(data: list[dict[str, str | dict | list[str]]], filename: str = "scraped_data.csv",
+                 as_file: bool = True):
+    """
+    Generate a CSV file from the provided scraped data.
+
+    :param as_file: a boolean to indicate whether to return the filename of the csv as a file or a string
+    :param data: List of dictionaries containing the scraped product data.
+    :param filename: Name of the output CSV file.
+
+    :return: Path to the generated CSV file.
+    """
+    if as_file:
+        return CSVGenerator.generate_csv_from_data(data, filename)
+    else:
+        return CSVGenerator.generate_csv_string_from_data(data)

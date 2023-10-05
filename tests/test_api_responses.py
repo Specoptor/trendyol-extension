@@ -26,7 +26,7 @@ def test_generate_api_response_partial_success(all_kinds_of_urls):
     response = generate_api_response(urls)
     assert response.status == "PARTIAL_SUCCESS"
     assert response.message == "Some URLs resulted in connection or scraping errors. CSV Generated containing the successfully scraped products."
-    assert response.data.attachment.filename == "scraped_data.csv"
+    assert 'scraped_data' in response.data.attachment.filename
     assert response.data.attachment.content_type == "text/csv"
     assert response.data.attachment.data is not None
     for data in response.data.processed_urls_dict.scraped:

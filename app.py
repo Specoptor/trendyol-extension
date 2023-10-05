@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
+from api_responses import generate_api_response
 
 from scraper import Scraper
 import csv
@@ -54,7 +55,43 @@ def generate_csv():
     return response
 
 
-"Endpoint '/generate-csv' implemented for generating and sending CSV as a response."
+@app_with_scraper.route('/scrape-and-generate-csv', methods=['POST'])
+def scrape_and_generate_csv():
+    """
+    This endpoint will scrape the provided URLs and generate a CSV file containing the scraped data if
+    scraper response is success or partial success.
+
+    It will return the csv file as an attachment if the response is success or partial success.
+    It will return a json response with if the response is failure.
+    :return:
+    """
+    urls = request.get_json().get("urls", [])
+    response = generate_api_response(urls)
+    if response.status == "SUCCESS":
+        return send_file(response.data.attachment.filename, as_attachment=True)
+    elif response.status == "PARTIAL_SUCCESS":
+        return send_file(response.data.attachment.filename, as_attachment=True)
+    else:
+        return response.json()
+
+
+@app_with_scraper.route('/scrape-and-send-filename', methods=['POST'])
+def scrape_and_send_filename():
+    """
+    This endpoint will scrape the provided URLs and generate a CSV file containing the scraped data if
+    scraper response is success or partial success.
+
+    :return: a json response with the filename of the csv file
+    """
+    urls = request.get_json().get("urls", [])
+    response = generate_api_response(urls)
+    return response.json()
+
+
+@app_with_scraper.route('/get-file/<path:path_to_file>', methods=['GET'])
+def get_file(path_to_file):
+    return send_file(path_to_file, as_attachment=True)
+
 
 # Run the Flask app instance
 if __name__ == '__main__':
