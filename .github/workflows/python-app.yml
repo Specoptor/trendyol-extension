@@ -2,9 +2,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "dev/faizan/endpoints/webservice-prototype" ]
+    branches: [ "dev/mohiz/webservice-prototype-demo" ]
   pull_request:
-    branches: [ "dev/faizan/endpoints/webservice-prototype" ]
+    branches: [ "dev/mohiz/webservice-prototype-demo" ]
 
 permissions:
   contents: read
