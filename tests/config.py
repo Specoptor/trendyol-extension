@@ -3,6 +3,9 @@ import json
 import pytest
 
 from app import app_with_scraper
+import os
+
+test_files_dir_path = os.path.join(os.path.dirname(__file__), 'files')
 
 
 @pytest.fixture
@@ -13,14 +16,16 @@ def client():
 
 @pytest.fixture
 def urls_250():
-    with open('files/urls.txt', 'r') as f:
+    target_file_path = os.path.join(test_files_dir_path, 'urls.txt')
+    with open(target_file_path, 'r') as f:
         urls = [line.strip() for line in f.readlines()]
         return urls[:250]
 
 
 @pytest.fixture
 def all_kinds_of_urls():
-    with open('files/all_kinds_of_urls.json', 'r') as f:
+    target_file_path = os.path.join(test_files_dir_path, 'all_kinds_of_urls.json')
+    with open(target_file_path, 'r') as f:
         urls = json.load(f)
         return urls
 
