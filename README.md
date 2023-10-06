@@ -1,7 +1,6 @@
 # Trendyol Extension 
-
+# This is my demo branch.
 ## This branch is responsible for implementing and generating 5 possible kinds of API Responses.
-
 ### 1. SUCCESS: All URLs scraped and CSV generated
 
 **Conditions**:
