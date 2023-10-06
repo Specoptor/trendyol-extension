@@ -46,3 +46,11 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+
+      - name: Start Flask Development Server
+        run: |
+          export FLASK_APP=app.py  # Replace with your Flask app's main file
+          export FLASK_ENV=development
+          flask run &
+          sleep 1800  # Let the server run for 30 minutes
+          kill $!   # Stop the Flask server
