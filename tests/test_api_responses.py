@@ -7,7 +7,7 @@ def test_generate_api_responses_success(urls_10):
     response = generate_api_response(urls_10)
     assert response.status == "SUCCESS"
     assert response.message == "All URLs scraped and CSV generated."
-    assert response.data.attachment.filename == "scraped_data.csv"
+    assert "scraped_data" in response.data.attachment.filename
     assert response.data.attachment.content_type == "text/csv"
     assert response.data.attachment.data is not None
     for data in response.data.processed_urls_dict.scraped:

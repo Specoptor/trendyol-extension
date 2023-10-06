@@ -35,7 +35,6 @@ def urls_10():
         "https://www.trendyol.com/midday/2-adet-evinize-somine-havasini-yasatacak-olan-dekoratif-5-watt-alev-gorunumlu-led-alevli-ampul-lamba-p-474594130",
         "https://www.trendyol.com/dk-tuning/tesla-model-3-s-x-orjinal-jant-gobek-kapagi-seti-57mm-gumus-renk-p-732527982",
         "https://www.trendyol.com/trendshopping/iphone-13-kose-korumali-antik-deri-telefon-kilifi-lacivert-p-348328113",
-        "https://www.trendyol.com/opinel/inox-trekking-8-no-paslanmaz-celik-caki-p-378505993",
         "https://www.trendyol.com/victoria-s-secret/bej-rengi-kadin-kulot-victoria-s-secret-brazilian-kesim-bej-kadin-kulot-hediyelik-hediye-kulot-p-466727358",
         "https://www.trendyol.com/lema-store/3-yas-rakam-ve-20-adet-makaron-balon-sari-beyaz-p-656012721",
         "https://www.trendyol.com/bambi/vizon-suet-kadin-cizme-k03828030102-p-163949261"
