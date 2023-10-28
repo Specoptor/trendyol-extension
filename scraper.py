@@ -1,5 +1,6 @@
 import re
 from typing import Any
+from urllib.parse import urlparse
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException
@@ -27,9 +28,13 @@ def is_valid_trendyol_url(url: str) -> bool:
     :param url: url to validate
     :return: true or false
     """
-
-    pattern = r'^https://www\.trendyol\.com/[\w\-]+/[\w\-]+-p-\d+$'
-    return bool(re.match(pattern, url))
+    try:
+        result = urlparse(url)
+        if all([result.scheme, result.netloc]):
+            pattern = r'^https://www\.trendyol\.com/[\w\-]+/[\w\-]+-p-\d+$'
+            return bool(re.match(pattern, url))
+    except ValueError:
+        return False
 
 
 class Driver:
