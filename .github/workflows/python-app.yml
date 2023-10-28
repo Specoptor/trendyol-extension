@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     # Setting PYTHONPATH to include the workspace
@@ -52,5 +51,23 @@ jobs:
           export FLASK_APP=app.py  # Replace with your Flask app's main file
           export FLASK_ENV=development
           flask run &
-          sleep 1800  # Let the server run for 30 minutes
-          kill $!   # Stop the Flask server
+          sleep 10  # Give Flask some time to start
+
+      - name: Install and run ngrok
+        run: |
+          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+          unzip ngrok-stable-linux-amd64.zip
+          ./ngrok http 5000 &  # Flask default port
+          sleep 10  # Give ngrok some time to establish the tunnel
+
+      - name: Display ngrok public URL
+        run: |
+          curl http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'
+
+      - name: Keep Flask and ngrok running
+        run: |
+          sleep 21590  # Keep the server running for just under 6 hours
+
+      - name: Cleanup
+        run: |
+          kill $(jobs -p)  # Stop all background jobs (Flask server and ngrok)
