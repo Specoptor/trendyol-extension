@@ -66,6 +66,7 @@ def scrape_and_generate_csv():
     :return:
     """
     urls = request.get_json().get("urls", [])
+    urls = [url.strip() for url in urls if isinstance(url, str) and url.strip()]
     response = generate_api_response(urls)
     if response.status == "SUCCESS":
         return send_file(response.data.attachment.filename, as_attachment=True)
@@ -95,4 +96,4 @@ def get_file(path_to_file):
 
 # Run the Flask app instance
 if __name__ == '__main__':
-    app_with_scraper.run(debug=True)
+    app_with_scraper.run(debug=True, port=5001)
