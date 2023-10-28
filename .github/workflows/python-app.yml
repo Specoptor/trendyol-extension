@@ -57,6 +57,8 @@ jobs:
         run: |
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
           unzip ngrok-stable-linux-amd64.zip
+          # Set ngrok auth token
+          ./ngrok authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
           ./ngrok http 5000 &  # Flask default port
           sleep 10  # Give ngrok some time to establish the tunnel
 
