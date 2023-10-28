@@ -96,4 +96,6 @@ def get_file(path_to_file):
 
 # Run the Flask app instance
 if __name__ == '__main__':
-    app_with_scraper.run(debug=True, port=5001)
+    app_with_scraper.run(debug=True,
+                         # port=5001
+                         )
