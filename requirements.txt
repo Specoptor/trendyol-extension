@@ -5,4 +5,3 @@ Requests==2.31.0
 selenium==4.13.0
 pandas == 2.1.2
 jupyter==1.0.0
-```
